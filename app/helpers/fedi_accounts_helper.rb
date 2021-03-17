@@ -1,0 +1,2 @@
+module FediAccountsHelper
+end

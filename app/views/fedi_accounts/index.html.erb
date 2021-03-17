@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Fedi Accounts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @fedi_accounts.each do |fedi_account| %>
+      <tr>
+        <td><%= link_to 'Show', fedi_account %></td>
+        <td><%= link_to 'Edit', edit_fedi_account_path(fedi_account) %></td>
+        <td><%= link_to 'Destroy', fedi_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Fedi Account', new_fedi_account_path %>
