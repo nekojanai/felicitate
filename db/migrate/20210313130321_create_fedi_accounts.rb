@@ -4,6 +4,7 @@ class CreateFediAccounts < ActiveRecord::Migration[6.1]
       t.string :username, unique: true, null: false
       t.string :domain, null: false
       t.string :token
+      t.datetime :authorized_at
       t.belongs_to :user
       t.timestamps
     end

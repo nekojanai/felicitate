@@ -14,11 +14,62 @@
  *= require_self
  */
 
+@import 'colors';
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: $color_tertiary;
+  color: $color_primary_text;
+  header {
+    background-color: $color_secondary;
+    height: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    >.left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-left: 15px;
+      >.logo {}
+    }
+    >.right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 15px;
+      >.navigation {}
+    }
+  }
+  >.main {
+    padding: 0px 15px;
+  }
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    color: black;
+  }
+  &:focus, &:visited {
+    color: black;
+  }
+}
+
+.cta-big {
+  background-color: $color_five;
+}
+
 .notice {
   background-color: yellow;
+  color: black;
 }
 
 .warn {
   background-color: red;
+  color: black;
 }
 

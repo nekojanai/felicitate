@@ -2,6 +2,14 @@ class FediAccountsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_fedi_account, only: %i[ show edit update destroy ]
 
+  def authorization
+    render_plain 'hello'
+  end
+
+  def authorize
+
+  end
+
   # GET /fedi_accounts or /fedi_accounts.json
   def index
     @fedi_accounts = current_user.fedi_accounts.all
@@ -23,7 +31,8 @@ class FediAccountsController < ApplicationController
 
   # POST /fedi_accounts or /fedi_accounts.json
   def create
-    @fedi_account = FediAccount.new(fedi_account_params.merge({ user_id: current_user.id }))
+    @fedi_account = FediAccount.new(fedi_account_params)
+    @fedi_account.user_id = current_user.id
 
     respond_to do |format|
       if @fedi_account.save
@@ -58,14 +67,13 @@ class FediAccountsController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_fedi_account
-      @fedi_account = FediAccount.where(user_id: current_user.id, id: params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  private def set_fedi_account
+    @fedi_account = FediAccount.where(user_id: current_user.id, id: params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def fedi_account_params
-      params.fetch(:fedi_account, {})
-    end
+  # Only allow a list of trusted parameters through.
+  private def fedi_account_params
+    params.fetch(:fedi_account, {}).permit(:username, :domain)
+  end
 end

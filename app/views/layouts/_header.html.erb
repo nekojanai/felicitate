@@ -1,0 +1,17 @@
+<header>
+  <div class="left">
+    <div class="logo">
+      <%= link_to root_path do %>felicitate<% end %>
+    </div>
+  </div>
+  <div class="right">
+    <nav class="navigation">
+      <% if user_signed_in? %>
+        <%= link_to 'fedi_accounts', fedi_accounts_path %>
+        <%= link_to 'logout', destroy_user_session_path, method: :delete %>
+      <% else %>
+        <%= link_to 'login', new_user_session_path %>
+      <% end %>
+    </nav>
+  </div>
+</header>

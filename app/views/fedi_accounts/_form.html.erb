@@ -1,4 +1,12 @@
-<%= form_with(model: fedi_account) do |form| %>
+<%= form_with(model: fedi_account) do |f| %>
+  <div class="field">
+    <%= f.label :username %><br />
+    <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
+  </div>
+  <div class="field">
+    <%= f.label :domain %><br />
+    <%= f.text_field :domain, autofocus: true, autocomplete: "domain" %>
+  </div>
   <% if fedi_account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(fedi_account.errors.count, "error") %> prohibited this fedi_account from being saved:</h2>
@@ -12,6 +20,6 @@
   <% end %>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= f.submit %>
   </div>
 <% end %>

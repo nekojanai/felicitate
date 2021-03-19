@@ -11,10 +11,11 @@
   </head>
 
   <body>
-    <%= link_to 'fedi accounts', fedi_accounts_path %>
-    <%= link_to 'logout', destroy_user_session_path, method: :delete %>
+    <%= render "layouts/header" %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <%= yield %>
+    <div class="main">
+      <%= yield %>
+    </div>
   </body>
 </html>

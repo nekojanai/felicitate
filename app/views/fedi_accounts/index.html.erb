@@ -1,18 +1,19 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Fedi Accounts</h1>
 
-<table>
+<table class="accounts-table">
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th>handle</th>
+      <th>authorized</th>
+      <th>actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @fedi_accounts.each do |fedi_account| %>
       <tr>
-        <td><%= link_to 'Show', fedi_account %></td>
+        <td><%= link_to fedi_account do %><%= "@#{fedi_account.username}@#{fedi_account.domain}" %><% end %>
+        <td><%= link_to 'Authorize', fedi_account_authorization_path(fedi_account) %></td>
         <td><%= link_to 'Edit', edit_fedi_account_path(fedi_account) %></td>
         <td><%= link_to 'Destroy', fedi_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
