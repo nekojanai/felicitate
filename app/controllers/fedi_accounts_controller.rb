@@ -1,12 +1,20 @@
 class FediAccountsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_fedi_account, only: %i[ show edit update destroy ]
+  before_action :set_fedi_account, only: %i[ authorize authorization show edit update destroy ]
 
   def authorization
-    render_plain 'hello'
   end
 
   def authorize
+    response = HTTParty.post("https://#{@fedi_account.domain}/api/v1/apps",
+      body: {
+        "client_name": "nekojanai being cute",
+        "website": "pl.neko.bar/cuties",
+        "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
+        "scopes": "read write follow push"
+      }
+    )
+    render json: response.to_json
 
   end
 
@@ -69,7 +77,8 @@ class FediAccountsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   private def set_fedi_account
-    @fedi_account = FediAccount.where(user_id: current_user.id, id: params[:id])
+    id = params[:id].nil? ? params[:fedi_account_id] : params[:id]
+    @fedi_account = FediAccount.find_by(user_id: current_user.id, id: id)
   end
 
   # Only allow a list of trusted parameters through.

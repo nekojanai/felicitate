@@ -1,1 +1,6 @@
-ayyyy
+<h1><%= "@#{@fedi_account.username}@#{@fedi_account.domain}" %></h1>
+<%= form_tag fedi_account_authorize_path, remote: true do %>
+  <%= label_tag 'password' %>
+  <%= password_field_tag 'password' %>
+  <%= submit_tag 'authorize' %>
+<% end %>
