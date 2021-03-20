@@ -14,7 +14,7 @@ class FediAccountsController < ApplicationController
         "scopes": "read write follow push"
       }
     )
-    render json: response.to_json
+    render json: '' if 
 
   end
 
