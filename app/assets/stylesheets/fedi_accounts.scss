@@ -2,7 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
-.accounts-table {
-  border: 1px solid red;
-  table-layout: fixed;
+@import 'colors';
+
+.accounts-table-wrapper {
+  border: 1px solid $color_primary;
+  overflow-x: auto;
 }
