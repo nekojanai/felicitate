@@ -26,6 +26,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'devise'
 gem 'httparty'
 gem 'mastodon-api', require: 'mastodon'
+gem 'will_paginate'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

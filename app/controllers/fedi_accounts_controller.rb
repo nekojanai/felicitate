@@ -1,22 +1,10 @@
 class FediAccountsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_fedi_account, only: %i[ authorize authorization show edit update destroy ]
-
-  def authorize
-    @response = HTTParty.post("https://#{@fedi_account.domain}/api/v1/apps",
-      body: {
-        "client_name": "nekojanai being cute",
-        "website": "pl.neko.bar/cuties",
-        "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
-        "scopes": "read write follow push"
-      }
-    )
-    render json: @response
-  end
+  before_action :set_fedi_account, only: %i[ show edit update destroy ]
 
   # GET /fedi_accounts or /fedi_accounts.json
   def index
-    @fedi_accounts = current_user.fedi_accounts.all
+    @fedi_accounts = current_user.fedi_accounts.all.paginate(page: params[:page])
   end
 
   # GET /fedi_accounts/1 or /fedi_accounts/1.json
@@ -35,6 +23,7 @@ class FediAccountsController < ApplicationController
 
   # POST /fedi_accounts or /fedi_accounts.json
   def create
+    pp password = params[:password]
     @fedi_account = FediAccount.new(fedi_account_params)
     @fedi_account.user_id = current_user.id
    
@@ -47,8 +36,6 @@ class FediAccountsController < ApplicationController
         format.json { render json: @fedi_account.errors, status: :unprocessable_entity }
       end
     end
-  rescue SocketError, Errno::ECONNREFUSED => e 
-    redirect_to fedi_accounts_url, alert: "uwaaa"
   end
 
   # PATCH/PUT /fedi_accounts/1 or /fedi_accounts/1.json
@@ -81,25 +68,7 @@ class FediAccountsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   private def fedi_account_params
-    params.fetch(:fedi_account, {}).permit(:username, :domain)
+    params.fetch(:fedi_account, {}).permit(:handle)
   end
 
-  private def authorize
-    @new_app_response = HTTParty.post("https://#{@fedi_account.domain}/api/v1/apps",
-      body: {
-        "client_name": "felicitate bot interface",
-        "website": "bots.neko.bar",
-        "redirect_uris": "urn:ietf:wg:oauth:2.0:oob",
-        "scopes": "read write follow push"
-      }
-    )
-    
-    false if @new_app_response.code != 200
-
-    @token_response = HTTParty.post("https://#{@fedi_account.domain}/oauth/token",
-      body: {
-        
-      }
-    )
-  end
 end

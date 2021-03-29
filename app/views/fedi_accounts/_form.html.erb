@@ -1,12 +1,15 @@
 <%= form_with(model: fedi_account) do |f| %>
   <div class="field">
-    <%= f.label :username %><br />
-    <%= f.text_field :username, autofocus: true, autocomplete: "username" %>
+    <%= f.label :handle %><br>
+    <small>e.g. username@domain.com</small><br>
+    <%= f.text_field :handle, autofocus: true, autocomplete: "handle", placeholder: "username@domain.com" %>
   </div>
-  <div class="field">
-    <%= f.label :domain %><br />
-    <%= f.text_field :domain, autofocus: true, autocomplete: "domain" %>
-  </div>
+  <% if fedi_account.new_record? %>
+    <div class="field">
+      <%= label_tag :password %><br>
+      <%= password_field_tag :password, nil, autofocus: true, autocomplete: "password" %>
+    </div>
+  <% end %>
   <% if fedi_account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(fedi_account.errors.count, "error") %> prohibited this fedi_account from being saved:</h2>

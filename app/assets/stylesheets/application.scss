@@ -52,11 +52,8 @@ a {
   text-decoration: none;
   &:hover {
     text-decoration: underline;
-    color: black;
   }
-  &:focus, &:visited {
-    color: black;
-  }
+  &:focus, &:visited {}
 }
 
 .cta-big {
