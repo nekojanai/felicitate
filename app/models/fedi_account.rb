@@ -19,7 +19,13 @@ class FediAccount < ApplicationRecord
   end
 
   def handle=(input)
-    split = input.split '@', 2
+    if (input =~ /@/) == 1
+      split = input.split '@', 2
+    elsif (input =~ /@/) != nil
+      split = input[1..].split '@', 2
+    else
+      raise "invalid fedi handle, please use this format: @example@domain.tld"
+    end
     self.username = split.first
     self.domain = split.last
   end
