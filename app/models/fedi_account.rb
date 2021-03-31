@@ -7,7 +7,7 @@ class FediAccount < ApplicationRecord
   self.per_page = 10
 
   def authorized?
-    !token.empty?
+    !token.nil?
   end
 
   def handle
@@ -30,8 +30,8 @@ class FediAccount < ApplicationRecord
     self.domain = split.last
   end
 
-  def self.authorize
-    @new_app_response = HTTParty.post("https://#{@fedi_account.domain}/api/v1/apps",
+  def authorize(password)
+    new_app_response = HTTParty.post("https://#{domain}/api/v1/apps",
       body: {
         "client_name": "felicitate bot interface",
         "website": "bots.neko.bar",
@@ -40,12 +40,20 @@ class FediAccount < ApplicationRecord
       }
     )
     
-    false if @new_app_response.code != 200
+    return false if new_app_response.code != 200
+    
+    new_app_response_body = JSON.parse new_app_response.body, symbolize_names: true
 
-    @token_response = HTTParty.post("https://#{@fedi_account.domain}/oauth/token",
+    token_response = HTTParty.post("https://#{domain}/oauth/token",
       body: {
-        
+        "username": "#{username}@#{domain}",
+        "password": password,
+        "grant_type": "password",
+        "client_id": new_app_response_body[:client_id],
+        "client_secret": new_app_response_body[:client_secret]
       }
     )
+
+    pp token_response
   end
 end
