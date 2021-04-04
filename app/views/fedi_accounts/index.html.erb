@@ -1,7 +1,7 @@
 <h1>Fedi Accounts</h1>
 <% unless @fedi_accounts.empty? %>
-  <div class="accounts-table-wrapper">
-    <table class="accounts-table">
+  <div class="feli-table-wrapper">
+    <table class="feli-table">
       <thead>
         <tr>
           <th>handle</th>
@@ -12,7 +12,7 @@
       <tbody>
         <% @fedi_accounts.each do |fedi_account| %>
           <tr>
-            <td><%= link_to fedi_account do %><%= "@#{fedi_account.username}@#{fedi_account.domain}" %><% end %>
+            <td><%= link_to fedi_account do fedi_account.handle end %>
             <td><%= link_to 'Edit', edit_fedi_account_path(fedi_account) %></td>
             <td><%= link_to 'Destroy', fedi_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
           </tr>
@@ -22,7 +22,7 @@
   </div>
   <%= will_paginate @fedi_accounts %>
 <% else %>
-  There are no fedi accounts ;-; yet
+  - no fedi accounts -
 <% end %>
 <br><br>
 

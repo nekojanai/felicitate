@@ -1,3 +1,7 @@
-<%= @fedi_account.inspect %><br>
+<h1><%= @fedi_account.handle %></h1>
+<h2>Details</h2>
+
+<%= render 'details', fedi_account: @fedi_account %>
+
 <%= link_to 'Edit', edit_fedi_account_path(@fedi_account) %> |
 <%= link_to 'Back', fedi_accounts_path %>

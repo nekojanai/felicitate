@@ -13,7 +13,6 @@
  *= require_tree .
  *= require_self
  */
-
 @import 'colors';
 
 body {
@@ -70,3 +69,8 @@ a {
   color: black;
 }
 
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}

@@ -2,12 +2,12 @@ class FediAccountsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_fedi_account, only: %i[ show edit update destroy ]
 
-  # GET /fedi_accounts or /fedi_accounts.json
+  # GET /fedi_accounts
   def index
     @fedi_accounts = current_user.fedi_accounts.all.paginate(page: params[:page])
   end
 
-  # GET /fedi_accounts/1 or /fedi_accounts/1.json
+  # GET /fedi_accounts/1
   def show
   end
 
@@ -21,43 +21,31 @@ class FediAccountsController < ApplicationController
   def edit
   end
 
-  # POST /fedi_accounts or /fedi_accounts.json
+  # POST /fedi_accounts
   def create
-    pp password = params[:password]
-    @fedi_account = FediAccount.new(fedi_account_params)
-    @fedi_account.user_id = current_user.id
-   
-    respond_to do |format|
-      if @fedi_account.save
-        format.html { redirect_to @fedi_account, notice: "Fedi account was successfully created." }
-        format.json { render :show, status: :created, location: @fedi_account }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @fedi_account.errors, status: :unprocessable_entity }
-      end
+    ActiveRecord::Base.transaction do
+      @fedi_account = FediAccount.new(fedi_account_params)
+      @fedi_account.handle
+      @fedi_account.user_id = current_user.id
+      @fedi_account.authorize_and_save!(params[:password])
     end
+    redirect_to @fedi_account, notice: "Fedi account was successfully created and authorized."
+  rescue FediAccount::FediAccountError, ActiveRecord::RecordInvalid => error
+    redirect_to new_fedi_account_url, notice: "Invalid credentials, could not save fedi account."
   end
 
-  # PATCH/PUT /fedi_accounts/1 or /fedi_accounts/1.json
+  # PATCH/PUT /fedi_accounts/1
   def update
-    respond_to do |format|
-      if @fedi_account.update(fedi_account_params)
-        format.html { redirect_to @fedi_account, notice: "Fedi account was successfully updated." }
-        format.json { render :show, status: :ok, location: @fedi_account }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @fedi_account.errors, status: :unprocessable_entity }
-      end
-    end
+    @fedi_account.update!(fedi_account_params)
+    redirect_to @fedi_account, notice: "Fedi account was successfully updated."
+  rescue ActiveRecord::RecordInvalid => error
+    redirect_to edit_fedi_account_url, notice: "Fedi account couldn't be updated"
   end
 
-  # DELETE /fedi_accounts/1 or /fedi_accounts/1.json
+  # DELETE /fedi_accounts/1 
   def destroy
-    @fedi_account.destroy
-    respond_to do |format|
-      format.html { redirect_to fedi_accounts_url, notice: "Fedi account was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    @fedi_account.destroy!
+    redirect_to fedi_accounts_url, notice: "Fedi account was successfully destroyed."
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -68,7 +56,7 @@ class FediAccountsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   private def fedi_account_params
-    params.fetch(:fedi_account, {}).permit(:handle)
+    params.fetch(:fedi_account).permit(:handle)
   end
 
 end

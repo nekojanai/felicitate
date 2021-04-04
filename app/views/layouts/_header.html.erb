@@ -7,6 +7,7 @@
   <div class="right">
     <nav class="navigation">
       <% if user_signed_in? %>
+        <%= link_to 'domains', domains_path %>
         <%= link_to 'fedi_accounts', fedi_accounts_path %>
         <%= link_to 'logout', destroy_user_session_path, method: :delete %>
       <% else %>

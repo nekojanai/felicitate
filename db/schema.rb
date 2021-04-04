@@ -10,19 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_13_130321) do
+ActiveRecord::Schema.define(version: 2021_04_01_233053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "fedi_accounts", force: :cascade do |t|
-    t.string "username", null: false
-    t.string "domain", null: false
-    t.string "token"
-    t.datetime "authorized_at"
-    t.bigint "user_id"
+  create_table "domains", force: :cascade do |t|
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_domains_on_name", unique: true
+  end
+
+  create_table "fedi_accounts", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "access_token"
+    t.datetime "authorized_at"
+    t.bigint "user_id"
+    t.bigint "domain_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["domain_id"], name: "index_fedi_accounts_on_domain_id"
+    t.index ["name", "user_id", "domain_id"], name: "index_fedi_accounts_on_name_and_user_id_and_domain_id", unique: true
     t.index ["user_id"], name: "index_fedi_accounts_on_user_id"
   end
 

@@ -1,0 +1,34 @@
+<div class="feli-table-wrapper">
+  <table>
+    <tbody>
+      <tr>
+        <td>name</td>
+        <td><%= fedi_account.name %></td>
+      </tr>
+      <tr>
+        <td>domain.name</td>
+        <td><%= fedi_account.domain&.name %></td>
+      </tr>
+      <tr>
+        <td>created_at</td>
+        <td><%= fedi_account.created_at %></td>
+      </tr>
+      <tr>
+        <td>modified_at</td>
+        <td><%= fedi_account.created_at %></td>
+      </tr>
+      <tr>
+        <td>authorized?</td>
+        <td><%= fedi_account.authorized? %></td>
+      </tr>
+      <tr>
+        <td>authorized_at</td>
+        <td><%= fedi_account.authorized_at %></td>
+      </tr>
+      <tr>
+        <td>access_token</td>
+        <td><%= fedi_account.access_token %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
